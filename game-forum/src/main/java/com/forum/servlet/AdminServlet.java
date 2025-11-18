@@ -31,10 +31,10 @@ public class AdminServlet extends HttpServlet {
         }
         
         String action = request.getPathInfo();
-        if (action == null) action = "";
+        if (action == null) action = "/";
         
         switch (action) {
-            case "/dashboard":
+            case "/"://dashboard
                 showDashboard(request, response);
                 break;
             case "/users":
@@ -47,12 +47,12 @@ public class AdminServlet extends HttpServlet {
                 showPosts(request, response);
                 break;
             default:
-                showDashboard(request, response);
+                response.sendRedirect("./");
                 break;
         }
     }
     
-    private void showDashboard(HttpServletRequest request, HttpServletResponse response) 
+    private void showDashboard(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.getRequestDispatcher("/admin/adminDashboard.jsp").forward(request, response);
     }

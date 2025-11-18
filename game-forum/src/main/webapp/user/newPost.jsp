@@ -9,7 +9,7 @@
     <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 <body>
-    <%@ include file="include/header.jsp" %>
+    <%@ include file="../include/header.jsp" %>
     
     <div class="container">
         <c:if test="${sessionScope.user == null}">
@@ -59,6 +59,6 @@
         </c:if>
     </div>
     
-    <%@ include file="include/footer.jsp" %>
+    <%@ include file="/include/footer.jsp" %>
 </body>
 </html>
