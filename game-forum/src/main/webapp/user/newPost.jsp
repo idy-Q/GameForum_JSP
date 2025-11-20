@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <title>发表帖子 - 游戏论坛</title>
-    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css">
 </head>
 <body>
     <%@ include file="../include/header.jsp" %>

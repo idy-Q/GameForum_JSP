@@ -30,7 +30,8 @@ public class RegisterServlet extends HttpServlet {
         UserDAO userDAO = new UserDAO();
 
         if (userDAO.registerUser(user)) {
-            response.sendRedirect("login.jsp?success=注册成功，请登录");
+            // 修改这行：重定向回register.jsp并传递success参数
+            response.sendRedirect("register.jsp?success=1");
         } else {
             request.setAttribute("error", "注册失败，请重试");
             request.getRequestDispatcher("/register.jsp").forward(request, response);
