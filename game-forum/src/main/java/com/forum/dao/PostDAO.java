@@ -91,23 +91,34 @@ public class PostDAO {
         }
         return null;
     }
-    
+
     public boolean createPost(Post post) {
         String sql = "INSERT INTO posts(title, content, user_id, category_id) VALUES(?, ?, ?, ?)";
         try (Connection conn = DBUtil.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            
+             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+
             stmt.setString(1, post.getTitle());
             stmt.setString(2, post.getContent());
             stmt.setInt(3, post.getUserId());
             stmt.setInt(4, post.getCategoryId());
-            
-            return stmt.executeUpdate() > 0;
+
+            int result = stmt.executeUpdate();
+
+            if (result > 0) {
+                // 获取生成的主键
+                ResultSet generatedKeys = stmt.getGeneratedKeys();
+                if (generatedKeys.next()) {
+                    post.setPostId(generatedKeys.getInt(1));
+                }
+                return true;
+            }
+            return false;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
     }
+
     
     public boolean deletePost(int postId) {
         String sql = "DELETE FROM posts WHERE post_id=?";

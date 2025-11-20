@@ -14,11 +14,21 @@
     <div class="container">
         <div class="form-container">
             <h2>用户注册</h2>
-            
+
             <c:if test="${param.error != null}">
                 <div class="alert alert-error">${param.error}</div>
             </c:if>
-            
+
+            <c:if test="${param.success != null}">
+                <div class="alert alert-success">注册成功！即将跳转到登录页面...</div>
+                <script>
+                    setTimeout(function() {
+                        window.location.href = "login.jsp";
+                    }, 3000);
+                </script>
+            </c:if>
+
+
             <form action="register" method="post">
                 <div class="form-group">
                     <label for="username">用户名:</label>
@@ -44,6 +54,5 @@
         </div>
     </div>
     
-    <%@ include file="include/footer.jsp" %>
 </body>
 </html>
