@@ -40,10 +40,12 @@ public class CreatePostServlet extends HttpServlet {
         PostDAO postDAO = new PostDAO();
         
         if (postDAO.createPost(post)) {
-            response.sendRedirect("index.jsp?success=帖子发布成功");
+            response.sendRedirect(request.getContextPath() + "/index.jsp?success=帖子发布成功");
         } else {
             request.setAttribute("error", "发布失败，请重试");
             request.getRequestDispatcher("/newPost.jsp").forward(request, response);
         }
+
+
     }
 }

@@ -1,14 +1,16 @@
 <!-- include/header.jsp -->
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/style.css">
+
 <div class="header">
     <div class="container">
-        <h1><a href="index.jsp">游戏论坛</a></h1>
+        <h1><a href="<%= request.getContextPath() %>/index.jsp">游戏论坛</a></h1>
         <nav>
             <ul>
-                <li><a href="index.jsp">首页</a></li>
+                <li><a href="<%= request.getContextPath() %>/index.jsp">首页</a></li>
                 <c:if test="${sessionScope.user != null}">
-                    <li><a href="user/newPost.jsp">发表帖子</a></li>
+                    <li><a href="newPost">发表帖子</a></li>
                     <c:if test="${sessionScope.user.role == 'admin'}">
                         <li><a href="admin/dashboard">管理员面板</a></li>
                     </c:if>

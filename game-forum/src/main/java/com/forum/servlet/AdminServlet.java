@@ -47,7 +47,13 @@ public class AdminServlet extends HttpServlet {
                 showPosts(request, response);
                 break;
             default:
-                response.sendRedirect("./");
+                // 直接输出简单的HTML响应，避免任何转发或重定向
+                response.setContentType("text/html;charset=UTF-8");
+                response.getWriter().println("<!DOCTYPE html>");
+                response.getWriter().println("<html><head><title>Admin Panel</title></head><body>");
+                response.getWriter().println("<h2>Invalid admin path. Redirecting to dashboard...</h2>");
+                response.getWriter().println("<script>setTimeout(function(){window.location.href='./';}, 10000);</script>");
+                response.getWriter().println("</body></html>");
                 break;
         }
     }
