@@ -24,7 +24,7 @@
                 <h3><a href="#">欢迎来到游戏论坛</a></h3>
                 <p>这是论坛的第一个帖子...</p>
                 <div class="post-meta">
-                    <span>作者: 管理员</span>a
+                    <span>作者: 管理员</span>
                     <span>发布时间: 2023-01-01</span>
                 </div>
             </div>
@@ -35,10 +35,10 @@
         <div class="widget">
             <h3>游戏板块</h3>
             <ul>
-                <li><a href="#">动作游戏</a></li>
-                <li><a href="#">角色扮演</a></li>
-                <li><a href="#">策略游戏</a></li>
-                <li><a href="#">休闲游戏</a></li>
+                <li><a href="forum/action-games.jsp">动作游戏</a></li>
+                <li><a href="forum/rpg-games.jsp">角色扮演</a></li>
+                <li><a href="forum/strategy-games.jsp">策略游戏</a></li>
+                <li><a href="forum/casual-games.jsp">休闲游戏</a></li>
             </ul>
         </div>
     </div>
