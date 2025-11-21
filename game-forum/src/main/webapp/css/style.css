@@ -237,3 +237,8 @@ body {
         margin: 20px auto;
     }
 }
+
+/* newPost.jsp */
+.no-resize {
+    resize: none;
+}

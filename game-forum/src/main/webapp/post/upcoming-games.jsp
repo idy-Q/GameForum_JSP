@@ -1,11 +1,11 @@
-<!-- action-games.jsp -->
+<!-- upcoming-games.jsp -->
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>动作游戏 - 游戏论坛</title>
+    <title>新游预告 - 游戏论坛</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css">
 </head>
 <body>
@@ -13,25 +13,24 @@
 
 <div class="container main-content">
     <div class="content">
-        <h2>动作游戏</h2>
+        <h2>新游预告</h2>
 
         <div class="posts-list">
-            <!-- 这里将从数据库获取动作游戏相关的帖子 -->
             <div class="post-item">
-                <h3><a href="#">《鬼泣5》最新DLC发布</a></h3>
-                <p>卡普空发布了《鬼泣5》的全新DLC内容...</p>
+                <h3><a href="#">《星空》最新预告片解析</a></h3>
+                <p>Bethesda全新太空探索游戏《星空》发布了最新预告...</p>
                 <div class="post-meta">
-                    <span>作者: 游戏达人</span>
-                    <span>发布时间: 2023-01-01</span>
+                    <span>作者: 星空爱好者</span>
+                    <span>发布时间: 2023-01-05</span>
                 </div>
             </div>
 
             <div class="post-item">
-                <h3><a href="#">《战神：诸神黄昏》攻略分享</a></h3>
-                <p>为大家带来最新的《战神：诸神黄昏》通关攻略...</p>
+                <h3><a href="#">《塞尔达传说：王国之泪》发售倒计时</a></h3>
+                <p>任天堂公布了《塞尔达传说：王国之泪》的发售日期...</p>
                 <div class="post-meta">
-                    <span>作者: 北欧神话迷</span>
-                    <span>发布时间: 2023-01-02</span>
+                    <span>作者: 塞尔达粉丝</span>
+                    <span>发布时间: 2023-01-03</span>
                 </div>
             </div>
         </div>
@@ -39,9 +38,9 @@
 
     <div class="sidebar">
         <div class="widget">
-            <h3>热门话题</h3>
+            <h3>游戏分类</h3>
             <ul>
-                <li><a href="${pageContext.request.contextPath}/post/upcoming-games.jsp">新游预告</a></li>
+                <li><a href="${pageContext.request.contextPath}/forum/action-games.jsp">动作游戏</a></li>
                 <li><a href="${pageContext.request.contextPath}/post/game-reviews.jsp">游戏评测</a></li>
                 <li><a href="${pageContext.request.contextPath}/post/upcoming-games.jsp">攻略分享</a></li>
             </ul>
