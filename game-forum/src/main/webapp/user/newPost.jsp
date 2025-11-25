@@ -47,7 +47,7 @@
                     
                     <div class="form-group">
                         <label for="content">内容:</label>
-                        <textarea id="content" name="content" rows="10" required></textarea>
+                        <textarea class="no-resize" id="content" name="content" rows="10" cols="63" required></textarea>
                     </div>
                     
                     <div class="form-group">
