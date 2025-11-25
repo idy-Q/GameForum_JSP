@@ -35,16 +35,16 @@
                 <p>暂无策略游戏帖子，快来发表第一个帖子吧！</p>
             </c:if>
         </div>
-    </div>
-
-    <div class="sidebar">
-        <div class="widget">
-            <h3>热门话题</h3>
-            <ul>
-                <li><a href="#">战术研究</a></li>
-                <li><a href="#">MOD分享</a></li>
-                <li><a href="#">战役复盘</a></li>
-            </ul>
+        
+        <div class="sidebar">
+            <div class="widget">
+                <h3>话题</h3>
+                <ul>
+                    <li><a href="#">战术研究</a></li>
+                    <li><a href="#">MOD分享</a></li>
+                    <li><a href="#">战役复盘</a></li>
+                </ul>
+            </div>
         </div>
     </div>
 </div>
