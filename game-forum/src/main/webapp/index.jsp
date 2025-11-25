@@ -35,7 +35,7 @@
         <div class="widget">
             <h3>游戏板块</h3>
             <ul>
-                <li><a href="forum/action-games.jsp">动作游戏</a></li>
+                <li><a href="forum/action-games">动作游戏</a></li>
                 <li><a href="forum/rpg-games.jsp">角色扮演</a></li>
                 <li><a href="forum/strategy-games.jsp">策略游戏</a></li>
                 <li><a href="forum/casual-games.jsp">休闲游戏</a></li>
