@@ -16,24 +16,23 @@
         <h2>动作游戏</h2>
 
         <div class="posts-list">
-            <!-- 这里将从数据库获取动作游戏相关的帖子 -->
-            <div class="post-item">
-                <h3><a href="#">《鬼泣5》最新DLC发布</a></h3>
-                <p>卡普空发布了《鬼泣5》的全新DLC内容...</p>
-                <div class="post-meta">
-                    <span>作者: 游戏达人</span>
-                    <span>发布时间: 2023-01-01</span>
-                </div>
-            </div>
+            <!-- 动态渲染从数据库获取的动作游戏相关帖子 -->
+            <c:if test="${not empty posts}">
+                <c:forEach items="${posts}" var="post">
+                    <div class="post-item">
+                        <h3><a href="${pageContext.request.contextPath}/user/postDetail.jsp?postId=${post.postId}">${post.title}</a></h3>
+                        <p>${post.content.length() > 3 ? post.content.substring(0, 3) : post.content}${post.content.length() > 100 ? '...' : ''}</p>
+                        <div class="post-meta">
+                            <span>作者: ${post.username}</span>
+                            <span>发布时间: ${post.createdAt}</span>
+                        </div>
+                    </div>
+                </c:forEach>
+            </c:if>
 
-            <div class="post-item">
-                <h3><a href="#">《战神：诸神黄昏》攻略分享</a></h3>
-                <p>为大家带来最新的《战神：诸神黄昏》通关攻略...</p>
-                <div class="post-meta">
-                    <span>作者: 北欧神话迷</span>
-                    <span>发布时间: 2023-01-02</span>
-                </div>
-            </div>
+            <c:if test="${empty posts}">
+                <p>暂无帖子，快来发表第一个帖子吧！</p>
+            </c:if>
         </div>
     </div>
 
