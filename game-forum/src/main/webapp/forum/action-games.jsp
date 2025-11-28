@@ -38,7 +38,7 @@
 
     <div class="sidebar">
         <div class="widget">
-            <h3>热门话题</h3>
+            <h3>话题</h3>
             <ul>
                 <li><a href="${pageContext.request.contextPath}/post/upcoming-games.jsp">新游预告</a></li>
                 <li><a href="${pageContext.request.contextPath}/post/game-reviews.jsp">游戏评测</a></li>

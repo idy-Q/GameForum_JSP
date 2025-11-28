@@ -132,4 +132,19 @@ public class PostDAO {
             return false;
         }
     }
+
+    public int getPostCount() {
+        String sql = "SELECT COUNT(*) FROM posts";
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
 }

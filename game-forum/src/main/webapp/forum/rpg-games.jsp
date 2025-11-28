@@ -39,7 +39,7 @@
         
         <div class="sidebar">
             <div class="widget">
-                <h3>热门话题</h3>
+                <h3>话题</h3>
                 <ul>
                     <li><a href="#">角色培养</a></li>
                     <li><a href="#">剧情讨论</a></li>

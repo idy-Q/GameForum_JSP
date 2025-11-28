@@ -12,7 +12,7 @@
                 <c:if test="${sessionScope.user != null}">
                     <li><a href="newPost">发表帖子</a></li>
                     <c:if test="${sessionScope.user.role == 'admin'}">
-                        <li><a href="admin/dashboard">管理员面板</a></li>
+                        <li><a href="<%= request.getContextPath() %>/admin/">管理员面板</a></li>
                     </c:if>
                 </c:if>
             </ul>
