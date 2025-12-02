@@ -20,6 +20,15 @@
                 }, 2000);
             </script>
         </c:if>
+
+        <c:if test="${param.success != null}">
+            <div class="alert alert-success">发表成功！即将跳转到帖子列表页面...</div>
+            <script>
+                setTimeout(function() {
+                    window.location.href = "postList.jsp";
+                }, 3000);
+            </script>
+        </c:if>
         
         <c:if test="${sessionScope.user != null}">
             <div class="form-container">

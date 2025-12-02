@@ -1,4 +1,5 @@
 <!-- action-games.jsp -->
+<!-- src/main/webapp/forum/action-games.jsp -->
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
@@ -21,7 +22,7 @@
                 <c:forEach items="${posts}" var="post">
                     <div class="post-item">
                         <h3><a href="${pageContext.request.contextPath}/user/postDetail.jsp?postId=${post.postId}">${post.title}</a></h3>
-                        <p>${post.content.length() > 3 ? post.content.substring(0, 3) : post.content}${post.content.length() > 3 ? '...' : ''}</p>
+                        <p>${post.content.length() > 50 ? post.content.substring(0, 50) : post.content}${post.content.length() > 50 ? '...' : ''}</p>
                         <div class="post-meta">
                             <span>作者: ${post.username}</span>
                             <span>发布时间: ${post.createdAt}</span>
@@ -46,6 +47,7 @@
             </ul>
         </div>
     </div>
+
 </div>
 
 <%@ include file="/include/footer.jsp" %>

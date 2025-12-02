@@ -6,17 +6,17 @@
 <head>
     <meta charset="UTF-8">
     <title>帖子管理 - 游戏论坛</title>
-    <link rel="stylesheet" type="text/css" href="../css/style.css">
+    <link rel="stylesheet" type="text/css" href="../../../css/style.css">
 </head>
 <body>
-    <%@ include file="../include/header.jsp" %>
+    <%@ include file="../../../include/header.jsp" %>
     
     <div class="container">
         <c:if test="${sessionScope.user == null || sessionScope.user.role != 'admin'}">
             <div class="alert alert-error">权限不足</div>
             <script>
                 setTimeout(function() {
-                    window.location.href = '../index.jsp';
+                    window.location.href = '../../../index.jsp';
                 }, 2000);
             </script>
         </c:if>
@@ -53,6 +53,6 @@
         </c:if>
     </div>
     
-    <%@ include file="../include/footer.jsp" %>
+    <%@ include file="../../../include/footer.jsp" %>
 </body>
 </html>
