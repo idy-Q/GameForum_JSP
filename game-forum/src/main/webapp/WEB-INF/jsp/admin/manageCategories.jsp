@@ -34,7 +34,7 @@
                     
                     <div class="form-group">
                         <label for="description">描述:</label>
-                        <textarea id="description" name="description" rows="3"></textarea>
+                        <textarea class="no-resize" id="description" name="description" rows="10" cols="78"></textarea>
                     </div>
                     
                     <div class="form-group">

@@ -1,3 +1,4 @@
+<!-- src/main/webapp/forum/rpg-games.jsp -->
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
@@ -37,18 +38,19 @@
                 <p>暂无 RPG 相关帖子，快来发表第一个帖子吧！</p>
             </c:if>
         </div>
-        
-        <div class="sidebar">
-            <div class="widget">
-                <h3>话题</h3>
-                <ul>
-                    <li><a href="#">角色培养</a></li>
-                    <li><a href="#">剧情讨论</a></li>
-                    <li><a href="#">装备收集</a></li>
-                </ul>
-            </div>
+    </div>
+
+    <div class="sidebar">
+        <div class="widget">
+            <h3>话题</h3>
+            <ul>
+                <li><a href="#">角色培养</a></li>
+                <li><a href="#">剧情讨论</a></li>
+                <li><a href="#">装备收集</a></li>
+            </ul>
         </div>
     </div>
+
 </div>
 
 <%@ include file="/include/footer.jsp" %>

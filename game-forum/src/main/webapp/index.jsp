@@ -57,16 +57,16 @@
                 <c:forEach var="category" items="${categories}">
                     <c:choose>
                         <c:when test="${category.categoryId == 1}">
-                            <li><a href="forum/action-games.jsp">${category.categoryName}</a></li>
+                            <li><a href="forum/action-games">${category.categoryName}</a></li>
                         </c:when>
                         <c:when test="${category.categoryId == 2}">
-                            <li><a href="forum/rpg-games.jsp">${category.categoryName}</a></li>
+                            <li><a href="forum/rpg-games">${category.categoryName}</a></li>
                         </c:when>
                         <c:when test="${category.categoryId == 3}">
-                            <li><a href="forum/strategy-games.jsp">${category.categoryName}</a></li>
+                            <li><a href="forum/strategy-games">${category.categoryName}</a></li>
                         </c:when>
                         <c:when test="${category.categoryId == 4}">
-                            <li><a href="forum/casual-games.jsp">${category.categoryName}</a></li>
+                            <li><a href="forum/casual-games">${category.categoryName}</a></li>
                         </c:when>
                         <c:otherwise>
                             <li><a href="forum?action-games.jsp?categoryId=${category.categoryId}">${category.categoryName}</a></li>
