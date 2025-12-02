@@ -51,4 +51,33 @@ public class CommentDAO {
             return false;
         }
     }
+
+    // CommentDAO.java
+// 将原有的 getCommentsByPost 方法重命名为 getCommentsByPostId
+    public List<Comment> getCommentsByPostId(int postId) {
+        List<Comment> comments = new ArrayList<>();
+        String sql = "SELECT c.*, u.username FROM comments c JOIN users u ON c.user_id=u.user_id WHERE c.post_id=? ORDER BY c.created_at ASC";
+
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, postId);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Comment comment = new Comment();
+                comment.setCommentId(rs.getInt("comment_id"));
+                comment.setContent(rs.getString("content"));
+                comment.setUserId(rs.getInt("user_id"));
+                comment.setPostId(rs.getInt("post_id"));
+                comment.setCreatedAt(rs.getTimestamp("created_at"));
+                comment.setUsername(rs.getString("username"));
+                comments.add(comment);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return comments;
+    }
+
 }
