@@ -20,32 +20,39 @@ public class CreatePostServlet extends HttpServlet {
             throws ServletException, IOException {
         request.getRequestDispatcher("/newPost.jsp").forward(request, response);
     }
-    
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) 
+
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
+        // 设置字符编码以支持中文
+        request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType("text/html;charset=UTF-8");
+
+        // 确保在重定向时也保持编码
+        response.setHeader("Content-Type", "text/html; charset=UTF-8");
+
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
-        
+
         if (user == null) {
-            response.sendRedirect("login.jsp");
+            response.sendRedirect(request.getContextPath() + "/login.jsp");
             return;
         }
-        
+
         String title = request.getParameter("title");
         String content = request.getParameter("content");
         int categoryId = Integer.parseInt(request.getParameter("categoryId"));
-        
+
         Post post = new Post(title, content, user.getUserId(), categoryId);
         PostDAO postDAO = new PostDAO();
-        
+
         if (postDAO.createPost(post)) {
             response.sendRedirect(request.getContextPath() + "/index.jsp?success=帖子发布成功");
         } else {
             request.setAttribute("error", "发布失败，请重试");
             request.getRequestDispatcher("/newPost.jsp").forward(request, response);
         }
-
-
     }
+
 }
