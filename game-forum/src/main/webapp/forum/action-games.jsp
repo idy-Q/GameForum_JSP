@@ -21,7 +21,7 @@
                 <c:forEach items="${posts}" var="post">
                     <div class="post-item">
                         <h3><a href="${pageContext.request.contextPath}/user/postDetail.jsp?postId=${post.postId}">${post.title}</a></h3>
-                        <p>${post.content.length() > 3 ? post.content.substring(0, 3) : post.content}${post.content.length() > 100 ? '...' : ''}</p>
+                        <p>${post.content.length() > 3 ? post.content.substring(0, 3) : post.content}${post.content.length() > 3 ? '...' : ''}</p>
                         <div class="post-meta">
                             <span>作者: ${post.username}</span>
                             <span>发布时间: ${post.createdAt}</span>
