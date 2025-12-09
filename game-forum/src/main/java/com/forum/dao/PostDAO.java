@@ -93,7 +93,7 @@ public class PostDAO {
     }
 
     public boolean createPost(Post post) {
-        String sql = "INSERT INTO posts(title, content, user_id, category_id) VALUES(?, ?, ?, ?)";
+        String sql = "INSERT INTO posts(title, content, user_id, category_id, created_at, updated_at) VALUES(?, ?, ?, ?, ?, ?)";
         try (Connection conn = DBUtil.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
@@ -101,6 +101,8 @@ public class PostDAO {
             stmt.setString(2, post.getContent());
             stmt.setInt(3, post.getUserId());
             stmt.setInt(4, post.getCategoryId());
+            stmt.setTimestamp(5, new Timestamp(post.getCreatedAt().getTime()));
+            stmt.setTimestamp(6, new Timestamp(post.getUpdatedAt().getTime()));
 
             int result = stmt.executeUpdate();
 
