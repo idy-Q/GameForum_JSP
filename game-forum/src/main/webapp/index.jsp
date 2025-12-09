@@ -15,6 +15,10 @@
     com.forum.dao.CategoryDAO categoryDAO = new com.forum.dao.CategoryDAO();
     java.util.List<com.forum.model.Category> categories = categoryDAO.getAllCategories();
     request.setAttribute("categories", categories);
+
+    com.forum.dao.PostDAO postDAO = new com.forum.dao.PostDAO();
+    java.util.List<com.forum.model.Post> latestPosts = postDAO.getAllPosts();
+    request.setAttribute("latestPosts", latestPosts);
 %>
 
 
@@ -26,29 +30,18 @@
         </c:if>
 
         <div class="posts-list">
-            <!-- 这里将从数据库获取帖子列表 -->
-            <div class="post-item">
-                <h3><a href="#">欢迎来到游戏论坛</a></h3>
-                <p>这是论坛的第一个帖子...</p>
-                <div class="post-meta">
-                    <span>作者: 管理员</span>
-                    <span>发布时间: 2023-01-01</span>
+            <c:forEach var="post" items="${latestPosts}" begin="0" end="1">
+                <div class="post-item">
+                    <h3><a href="post?postId=${post.postId}">${post.title}</a></h3>
+                    <p>${post.content}</p>
+                    <div class="post-meta">
+                        <span>作者: ${post.username}</span>
+                        <span>发布时间: ${post.createdAt}</span>
+                    </div>
                 </div>
-            </div>
+            </c:forEach>
         </div>
     </div>
-
-<%--    <div class="sidebar">--%>
-<%--        <div class="widget">--%>
-<%--            <h3>游戏板块</h3>--%>
-<%--            <ul>--%>
-<%--                <li><a href="forum/action-games">动作游戏</a></li>--%>
-<%--                <li><a href="forum/rpg-games.jsp">角色扮演</a></li>--%>
-<%--                <li><a href="forum/strategy-games.jsp">策略游戏</a></li>--%>
-<%--                <li><a href="forum/casual-games.jsp">休闲游戏</a></li>--%>
-<%--            </ul>--%>
-<%--        </div>--%>
-<%--    </div>--%>
 
     <div class="sidebar">
         <div class="widget">
