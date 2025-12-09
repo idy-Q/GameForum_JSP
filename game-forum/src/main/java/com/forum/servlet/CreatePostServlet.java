@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.security.Timestamp;
 
 @WebServlet("/createPost")
 public class CreatePostServlet extends HttpServlet {
@@ -20,32 +21,41 @@ public class CreatePostServlet extends HttpServlet {
             throws ServletException, IOException {
         request.getRequestDispatcher("/newPost.jsp").forward(request, response);
     }
-    
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) 
+
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
+        // 设置字符编码以支持中文
+        request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType("text/html;charset=UTF-8");
+
+        // 确保在重定向时也保持编码
+        response.setHeader("Content-Type", "text/html; charset=UTF-8");
+
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
-        
+
         if (user == null) {
-            response.sendRedirect("login.jsp");
+            response.sendRedirect(request.getContextPath() + "/login.jsp");
             return;
         }
-        
+
         String title = request.getParameter("title");
         String content = request.getParameter("content");
         int categoryId = Integer.parseInt(request.getParameter("categoryId"));
-        
+
         Post post = new Post(title, content, user.getUserId(), categoryId);
         PostDAO postDAO = new PostDAO();
-        
+
+// 修改 CreatePostServlet 中的成功跳转逻辑
         if (postDAO.createPost(post)) {
-            response.sendRedirect(request.getContextPath() + "/index.jsp?success=帖子发布成功");
+            // 使用绝对路径确保正确跳转
+            response.sendRedirect(request.getContextPath() + "/index.jsp?success=" + java.net.URLEncoder.encode("帖子发布成功", "UTF-8"));
         } else {
             request.setAttribute("error", "发布失败，请重试");
-            request.getRequestDispatcher("/newPost.jsp").forward(request, response);
+            request.getRequestDispatcher("/user/newPost.jsp").forward(request, response);
         }
-
-
     }
+
 }

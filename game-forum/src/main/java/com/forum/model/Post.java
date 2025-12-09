@@ -1,7 +1,7 @@
 // Post.java
 package com.forum.model;
 
-import java.util.Date;
+import java.sql.Timestamp;
 
 public class Post {
     private int postId;
@@ -9,8 +9,8 @@ public class Post {
     private String content;
     private int userId;
     private int categoryId;
-    private Date createdAt;
-    private Date updatedAt;
+    private Timestamp createdAt;
+    private Timestamp updatedAt;
     private String username; // For display purposes
     private String categoryName;
     
@@ -22,8 +22,8 @@ public class Post {
         this.content = content;
         this.userId = userId;
         this.categoryId = categoryId;
-        this.createdAt = new Date();
-        this.updatedAt = new Date();
+        this.createdAt = new Timestamp(System.currentTimeMillis());
+        this.updatedAt = new Timestamp(System.currentTimeMillis())  ;
     }
     
     // Getters and Setters
@@ -41,12 +41,12 @@ public class Post {
     
     public int getCategoryId() { return categoryId; }
     public void setCategoryId(int categoryId) { this.categoryId = categoryId; }
-    
-    public Date getCreatedAt() { return createdAt; }
-    public void setCreatedAt(Date createdAt) { this.createdAt = createdAt; }
-    
-    public Date getUpdatedAt() { return updatedAt; }
-    public void setUpdatedAt(Date updatedAt) { this.updatedAt = updatedAt; }
+
+    public Timestamp getCreatedAt() { return createdAt; }
+    public void setCreatedAt(Timestamp createdAt) { this.createdAt = createdAt; }
+
+    public Timestamp getUpdatedAt() { return updatedAt; }
+    public void setUpdatedAt(Timestamp updatedAt) { this.updatedAt = updatedAt; }
     
     public String getUsername() { return username; }
     public void setUsername(String username) { this.username = username; }
