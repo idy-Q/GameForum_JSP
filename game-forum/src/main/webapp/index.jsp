@@ -32,7 +32,7 @@
         <div class="posts-list">
             <c:forEach var="post" items="${latestPosts}" begin="0" end="1">
                 <div class="post-item">
-                    <h3><a href="post?postId=${post.postId}">${post.title}</a></h3>
+                    <h3><a href="${pageContext.request.contextPath}/postDetail?postId=${post.postId}">${post.title}</a></h3>
                     <p>${post.content}</p>
                     <div class="post-meta">
                         <span>作者: ${post.username}</span>

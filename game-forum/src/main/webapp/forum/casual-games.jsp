@@ -35,16 +35,42 @@
             <c:if test="${empty posts}">
                 <p>暂无休闲游戏帖子，快来发表第一个帖子吧！</p>
             </c:if>
+
+            <div class="posts-list">
+                <c:if test="${not empty posts}">
+                </c:if>
+
+                <c:if test="${empty posts}">
+                    <p>暂无帖子，快来发表第一个帖子吧！</p>
+                </c:if>
+
+                <%@ include file="/include/pagination.jsp" %>
+
+            </div>
         </div>
     </div>
 
     <div class="sidebar">
         <div class="widget">
-            <h3>话题</h3>
+            <h3>🔥 本版热搜 (Top 5)</h3>
             <ul>
-                <li><a href="#">轻松娱乐</a></li>
-                <li><a href="#">社交互动</a></li>
-                <li><a href="#">休闲时光</a></li>
+                <c:choose>
+                    <c:when test="${not empty trendingPosts}">
+                        <c:forEach items="${trendingPosts}" var="trend">
+                            <li style="margin-bottom: 8px; border-bottom: 1px dashed #eee; padding-bottom: 5px;">
+                                <a href="${pageContext.request.contextPath}/postDetail?postId=${trend.postId}" style="display: flex; justify-content: space-between;">
+                                    <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 180px;">
+                                            ${trend.title}
+                                    </span>
+                                    <span style="color: #ff6b6b; font-size: 0.9em;">🔥 ${trend.likes}</span>
+                                </a>
+                            </li>
+                        </c:forEach>
+                    </c:when>
+                    <c:otherwise>
+                        <li>暂无热搜数据</li>
+                    </c:otherwise>
+                </c:choose>
             </ul>
         </div>
     </div>

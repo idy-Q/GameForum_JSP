@@ -22,7 +22,30 @@
         <div class="post-meta">
             <span>作者: ${post.username}</span>
             <span>发布时间: <fmt:formatDate value="${post.createdAt}" pattern="yyyy-MM-dd HH:mm:ss"/></span>
-            <span>更新时间: <fmt:formatDate value="${post.updatedAt}" pattern="yyyy-MM-dd HH:mm:ss"/></span>
+
+            <span id="likeCountDisplay" style="margin-left: 20px; color: #ff6b6b; font-weight: bold;">
+                ❤ 热度: ${post.likes}
+            </span>
+
+            <button type="button" onclick="updateLike(${post.postId})"
+                    style="margin-left: 10px; padding: 2px 8px; cursor: pointer; background: #ff6b6b; color: white; border: none; border-radius: 4px;">
+                👍 点赞
+            </button>
+
+            <script>
+                function updateLike(postId) {
+                    // 使用 fetch 发送异步 POST 请求
+                    fetch('${pageContext.request.contextPath}/likePost?postId=' + postId, {
+                        method: 'POST'
+                    })
+                        .then(response => response.text()) // 接收后端传回来的纯文本（新的点赞数）
+                        .then(newCount => {
+                            // 找到显示数字的 span，直接修改它的文字内容
+                            document.getElementById('likeCountDisplay').innerText = '❤ 热度: ' + newCount;
+                        })
+                        .catch(error => console.error('Error:', error));
+                }
+            </script>
         </div>
         <div class="post-content">
             <p>${post.content}</p>

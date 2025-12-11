@@ -25,13 +25,32 @@ public class RpgGamesServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // 获取角色扮演游戏分类下的帖子 (角色扮演游戏的category_id为2)
-        List<Post> posts = postDAO.getPostsByCategory(2);
+        int page = 1; // 默认第1页
+        int pageSize = 5; // 每页显示5条 (为了测试效果，你可以改成10)
 
-        // 设置到request作用域
+        String pageParam = request.getParameter("page");
+        if (pageParam != null && !pageParam.isEmpty()) {
+            try {
+                page = Integer.parseInt(pageParam);
+            } catch (NumberFormatException e) {
+                page = 1; // 如果参数乱填，强制回第1页
+            }
+        }
+
+        int categoryId = 2;
+
+        List<Post> posts = postDAO.getPostsByCategory(categoryId, page, pageSize);
+        List<Post> trendingPosts = postDAO.getTrendingPostsByCategory(categoryId, 5); // 获取热搜
+
+        int totalPosts = postDAO.getPostCountByCategory(categoryId);
+        int totalPages = (int) Math.ceil((double) totalPosts / pageSize);
+
         request.setAttribute("posts", posts);
+        request.setAttribute("trendingPosts", trendingPosts);
 
-        // 转发到视图
+        request.setAttribute("currentPage", page);
+        request.setAttribute("totalPages", totalPages);
+
         request.getRequestDispatcher("/forum/rpg-games.jsp").forward(request, response);
     }
 }

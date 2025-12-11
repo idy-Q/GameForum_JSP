@@ -242,3 +242,39 @@ body {
 .no-resize {
     resize: none;
 }
+
+/* Pagination Styles */
+.pagination {
+    margin-top: 30px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.pagination a, .pagination span {
+    display: inline-block;
+    padding: 8px 16px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #333;
+    transition: background-color 0.3s;
+}
+
+.pagination a:hover {
+    background-color: #f4f4f4;
+    border-color: #ccc;
+}
+
+.pagination .current {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
+.pagination .disabled {
+    color: #999;
+    background-color: #eee;
+    pointer-events: none; /* 禁止点击 */
+}
