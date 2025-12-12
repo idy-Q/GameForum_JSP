@@ -15,28 +15,41 @@ import java.io.IOException;
 
 @WebServlet("/addComment")
 public class AddCommentServlet extends HttpServlet {
-    
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) 
+
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
+        // 1. 设置请求和响应的编码
+        request.setCharacterEncoding("UTF-8");
+        response.setContentType("text/plain;charset=UTF-8");
+
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
-        
+
+        // 如果未登录，返回特定字符串让前端处理
         if (user == null) {
-            response.sendRedirect("login.jsp");
+            response.getWriter().write("need_login");
             return;
         }
-        
+
         String content = request.getParameter("content");
-        int postId = Integer.parseInt(request.getParameter("postId"));
-        
+        String postIdStr = request.getParameter("postId");
+
+        if (postIdStr == null || postIdStr.isEmpty() || content == null || content.trim().isEmpty()) {
+            response.getWriter().write("empty_content");
+            return;
+        }
+
+        int postId = Integer.parseInt(postIdStr);
+
         Comment comment = new Comment(content, user.getUserId(), postId);
         CommentDAO commentDAO = new CommentDAO();
-        
+
         if (commentDAO.addComment(comment)) {
-            response.sendRedirect("postDetail.jsp?postId=" + postId);
+            // 2. 成功时只返回 "success" 字符串，不再重定向
+            response.getWriter().write("success");
         } else {
-            response.sendRedirect("postDetail.jsp?postId=" + postId + "&error=评论失败");
+            response.getWriter().write("fail");
         }
     }
 }
