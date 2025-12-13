@@ -10,8 +10,8 @@
 </head>
 <body>
     <%@ include file="../../../include/header.jsp" %>
-    
-    <div class="container">
+
+    <div class="admin-container">
         <c:if test="${sessionScope.user == null || sessionScope.user.role != 'admin'}">
             <div class="alert alert-error">权限不足</div>
             <script>
@@ -60,22 +60,60 @@
             </table>
         </c:if>
     </div>
-    
+
+    <!-- 将 manageUsers.jsp 中的 JavaScript 部分修改为使用绝对路径 -->
     <script>
         function changeRole(userId, role) {
             if (confirm('确定要更改用户角色吗？')) {
-                // 这里应该调用相应的Servlet处理
-                alert('功能待实现');
+                fetch('${pageContext.request.contextPath}/admin/userAction', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: 'action=changeRole&userId=' + userId + '&role=' + role
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert(data.message);
+                            location.reload();
+                        } else {
+                            alert('操作失败: ' + data.message);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('操作失败');
+                    });
             }
         }
-        
+
         function deleteUser(userId) {
-            if (confirm('确定要删除该用户吗？')) {
-                // 这里应该调用相应的Servlet处理
-                alert('功能待实现');
+            if (confirm('确定要删除该用户吗？此操作不可恢复！')) {
+                fetch('${pageContext.request.contextPath}/admin/userAction', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: 'action=deleteUser&userId=' + userId
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert(data.message);
+                            location.reload();
+                        } else {
+                            alert('删除失败: ' + data.message);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('删除失败');
+                    });
             }
         }
     </script>
+
     
     <%@ include file="../../../include/footer.jsp" %>
 </body>
