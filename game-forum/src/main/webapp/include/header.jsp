@@ -1,44 +1,70 @@
+<%-- src/main/webapp/include/header.jsp --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/style.css">
 
-<div class="header">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css">
+
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top">
     <div class="container">
-        <h1><a href="<%= request.getContextPath() %>/index.jsp">游戏论坛</a></h1>
-        <nav>
-            <ul>
-                <li><a href="<%= request.getContextPath() %>/index.jsp">首页</a></li>
+        <a class="navbar-brand" href="${pageContext.request.contextPath}/index.jsp">
+            <i class="fas fa-gamepad"></i> 游戏论坛
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="${pageContext.request.contextPath}/index.jsp"><i class="fas fa-home"></i> 首页</a>
+                </li>
                 <c:if test="${sessionScope.user != null}">
-                    <li><a href="<%= request.getContextPath() %>/newPost">发表帖子</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="${pageContext.request.contextPath}/newPost"><i class="fas fa-edit"></i> 发帖</a>
+                    </li>
                     <c:if test="${sessionScope.user.role == 'admin'}">
-                        <li><a href="<%= request.getContextPath() %>/admin/">管理员面板</a></li>
+                        <li class="nav-item">
+                            <a class="nav-link text-warning" href="${pageContext.request.contextPath}/admin/"><i class="fas fa-shield-alt"></i> 管理面板</a>
+                        </li>
                     </c:if>
                 </c:if>
             </ul>
-        </nav>
 
-        <div class="search-box" style="margin: 0 20px;">
-            <form action="<%= request.getContextPath() %>/search" method="get" style="display: flex;">
-                <input type="text" name="keyword" placeholder="搜索帖子..." required
-                       style="padding: 5px 10px; border-radius: 4px 0 0 4px; border: 1px solid #ddd; border-right: none; outline: none;">
-                <button type="submit"
-                        style="padding: 5px 15px; border-radius: 0 4px 4px 0; border: 1px solid #ddd; background: #007bff; color: white; cursor: pointer;">
-                    搜
-                </button>
+            <form class="d-flex me-3" action="${pageContext.request.contextPath}/search" method="get">
+                <div class="input-group">
+                    <input type="text" name="keyword" class="form-control search-input" placeholder="搜索帖子..." required>
+                    <button class="btn btn-outline-primary" type="submit"><i class="fas fa-search"></i></button>
+                </div>
             </form>
-        </div>
 
-        <div class="user-info">
-            <c:choose>
+            <%-- src/main/webapp/include/header.jsp 的一部分 --%>
+            <ul class="navbar-nav align-items-center"> <c:choose>
                 <c:when test="${sessionScope.user != null}">
-                    欢迎，${sessionScope.user.username} |
-                    <a href="<%= request.getContextPath() %>/logout">退出</a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-user-circle"></i> ${sessionScope.user.username}
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end">
+                            <li><a class="dropdown-item" href="${pageContext.request.contextPath}/user/dashboard.jsp">个人中心</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item text-danger" href="${pageContext.request.contextPath}/logout">退出登录</a></li>
+                        </ul>
+                    </li>
                 </c:when>
                 <c:otherwise>
-                    <a href="<%= request.getContextPath() %>/login.jsp">登录</a> |
-                    <a href="<%= request.getContextPath() %>/register.jsp">注册</a>
+                    <li class="nav-item">
+                        <a class="nav-link" href="${pageContext.request.contextPath}/login.jsp">登录</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-primary btn-sm ms-3" href="${pageContext.request.contextPath}/register.jsp" style="padding: 0.375rem 1rem;">注册</a>
+                    </li>
                 </c:otherwise>
             </c:choose>
+            </ul>
         </div>
     </div>
-</div>
+</nav>
+
+<div style="height: 20px;"></div>
