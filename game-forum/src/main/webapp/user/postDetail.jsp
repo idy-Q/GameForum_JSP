@@ -2,25 +2,27 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
-<html>
+<html lang="zh">
 <head>
     <meta charset="UTF-8">
     <title>帖子详情 - 游戏论坛</title>
-    <link rel="stylesheet" type="text/css" href="css/style.css">
-
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-
     <style>
-        /* 简单的 Markdown 内容样式优化 */
-        .markdown-body {
+        /* 针对详情页的额外微调 */
+        .post-content {
+            font-size: 1.1rem; /* 正文稍微大一点，阅读更舒服 */
             line-height: 1.8;
-            font-size: 16px;
+            color: #e9ecef;    /* 确保正文内容也是亮色 */
         }
-        .markdown-body h1, .markdown-body h2 { border-bottom: 1px solid #eaecef; padding-bottom: .3em; }
-        .markdown-body blockquote { border-left: 4px solid #dfe2e5; color: #6a737d; padding-left: 1em; margin-left: 0; }
-        .markdown-body code { background-color: rgba(27,31,35,.05); border-radius: 3px; padding: .2em .4em; }
-        .markdown-body img { max-width: 100%; border-radius: 4px; }
-        .markdown-body pre { background: #f6f8fa; padding: 16px; border-radius: 4px; overflow: auto; }
+        /* 增加引用块的样式 */
+        .post-content blockquote {
+            border-left: 4px solid #5c9eff;
+            padding-left: 1rem;
+            color: #adb5bd;
+            background-color: rgba(255,255,255,0.05);
+            padding: 10px;
+            border-radius: 4px;
+        }
     </style>
 </head>
 <body>
@@ -28,153 +30,167 @@
 
 <div class="container">
     <c:if test="${param.error != null}">
-        <div class="alert alert-error">${param.error}</div>
+        <div class="alert alert-danger my-4">${param.error}</div>
     </c:if>
 
-    <div class="post-detail">
-        <h2>${post.title}</h2>
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card mb-4 mt-4">
+                <div class="card-body p-4">
+                    <h1 class="card-title display-6 mb-3 text-white fw-bold">${post.title}</h1>
 
-        <div class="post-meta">
-            <span>作者: ${post.username}</span>
-            <span>发布时间: <fmt:formatDate value="${post.createdAt}" pattern="yyyy-MM-dd HH:mm:ss"/></span>
+                    <div class="d-flex align-items-center mb-4 text-muted border-bottom border-secondary pb-3">
+                        <div class="bg-secondary rounded-circle d-flex justify-content-center align-items-center text-white me-2" style="width: 40px; height: 40px;">
+                            ${post.username.substring(0,1).toUpperCase()}
+                        </div>
+                        <div class="me-auto">
+                            <span class="d-block text-white fw-bold">${post.username}</span>
+                            <small class="text-secondary"><i class="far fa-clock"></i> <fmt:formatDate value="${post.createdAt}" pattern="yyyy-MM-dd HH:mm"/></small>
+                        </div>
 
-            <span id="likeCountDisplay" style="margin-left: 20px; color: #ff6b6b; font-weight: bold;">
-                ❤ 热度: ${post.likes}
-            </span>
-            <button type="button" onclick="updateLike(${post.postId})"
-                    style="margin-left: 10px; padding: 2px 8px; cursor: pointer; background: #ff6b6b; color: white; border: none; border-radius: 4px;">
-                👍 点赞
-            </button>
-            <script>
-                function updateLike(postId) {
-                    fetch('${pageContext.request.contextPath}/likePost?postId=' + postId, { method: 'POST' })
-                        .then(response => response.text())
-                        .then(newCount => {
-                            document.getElementById('likeCountDisplay').innerText = '❤ 热度: ' + newCount;
-                        })
-                        .catch(error => console.error('Error:', error));
-                }
-            </script>
-        </div>
-
-        <div class="post-content">
-            <textarea id="raw-content" style="display:none;">${post.content}</textarea>
-
-            <div id="display-content" class="markdown-body"></div>
-        </div>
-    </div>
-
-    <div class="comments-section">
-        <h3>评论 (${comments.size()})</h3>
-
-        <div id="comments-list">
-            <c:forEach var="comment" items="${comments}">
-                <div class="comment-item">
-                    <div class="comment-header">
-                        <strong>${comment.username}</strong>
-                        <span class="comment-date"><fmt:formatDate value="${comment.createdAt}" pattern="yyyy-MM-dd HH:mm:ss"/></span>
+                        <div class="text-end">
+                            <button type="button" onclick="updateLike(${post.postId})" class="btn btn-outline-danger btn-sm">
+                                <i class="fas fa-heart"></i> <span id="likeCountDisplay">${post.likes}</span>
+                            </button>
+                        </div>
                     </div>
-                    <div class="comment-content">
-                        <p>${comment.content}</p>
-                    </div>
+
+                    <textarea id="raw-content" style="display:none;">${post.content}</textarea>
+                    <div id="display-content" class="markdown-body post-content"></div>
                 </div>
-            </c:forEach>
-        </div>
-
-        <c:if test="${empty comments}">
-            <p id="no-comment-tip">暂无评论</p>
-        </c:if>
-
-        <c:if test="${sessionScope.user != null}">
-            <div class="comment-form" style="margin-top: 20px;">
-                <h4>发表评论</h4>
-                <form id="commentForm">
-                    <input type="hidden" id="commentPostId" name="postId" value="${param.postId}">
-                    <div class="form-group">
-                        <textarea id="commentContent" name="content" rows="4" placeholder="请输入您的评论..." required></textarea>
-                    </div>
-                    <div class="form-group">
-                        <button type="button" onclick="submitComment()">发表评论</button>
-                    </div>
-                </form>
             </div>
-        </c:if>
 
-        <c:if test="${sessionScope.user == null}">
-            <p><a href="login.jsp">登录</a> 后可以发表评论</p>
-        </c:if>
+            <div class="card mb-5">
+                <div class="card-header bg-transparent border-secondary text-white">
+                    <h5 class="mb-0"><i class="fas fa-comments text-primary me-2"></i> 评论 (${comments.size()})</h5>
+                </div>
+                <div class="card-body" id="comments-section">
+
+                    <div id="comments-list">
+                        <c:forEach var="comment" items="${comments}">
+                            <div class="d-flex mb-3 border-bottom border-secondary pb-3 comment-item">
+                                <div class="flex-shrink-0">
+                                    <div class="bg-dark border border-secondary rounded-circle d-flex justify-content-center align-items-center text-muted" style="width: 35px; height: 35px;">
+                                            ${comment.username.substring(0,1).toUpperCase()}
+                                    </div>
+                                </div>
+                                <div class="flex-grow-1 ms-3">
+                                    <div class="d-flex justify-content-between">
+                                        <h6 class="mt-0 mb-1 text-primary fw-bold">${comment.username}</h6>
+                                        <small class="text-muted"><fmt:formatDate value="${comment.createdAt}" pattern="yyyy-MM-dd HH:mm"/></small>
+                                    </div>
+                                    <p class="mb-0 text-light">${comment.content}</p>
+                                </div>
+                            </div>
+                        </c:forEach>
+                    </div>
+
+                    <c:if test="${empty comments}">
+                        <div id="no-comment-tip" class="text-center text-muted py-4">
+                            <i class="far fa-comment-dots fa-2x mb-2"></i>
+                            <p>暂无评论，来做第一个发言的人吧！</p>
+                        </div>
+                    </c:if>
+
+                    <c:if test="${sessionScope.user != null}">
+                        <div class="mt-4">
+                            <form id="commentForm">
+                                <input type="hidden" id="commentPostId" name="postId" value="${post.postId}">
+                                <div class="mb-3">
+                                    <textarea class="form-control bg-dark text-white border-secondary" id="commentContent" name="content" rows="3" placeholder="发表你的高见..." required></textarea>
+                                </div>
+                                <div class="text-end">
+                                    <button type="button" onclick="submitComment()" class="btn btn-primary px-4">
+                                        <i class="fas fa-paper-plane me-2"></i> 发送评论
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </c:if>
+
+                    <c:if test="${sessionScope.user == null}">
+                        <div class="alert alert-secondary mt-3 text-center bg-dark border-secondary text-muted">
+                            <a href="login.jsp" class="fw-bold text-primary">登录</a> 后参与讨论
+                        </div>
+                    </c:if>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <script>
-        function submitComment() {
-            var content = document.getElementById("commentContent").value;
-            var postId = document.getElementById("commentPostId").value;
-
-            if (!content.trim()) {
-                alert("请输入评论内容！");
-                return;
-            }
-
-            // 使用 fetch 发送 AJAX 请求
-            fetch('${pageContext.request.contextPath}/addComment', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                // 拼接表单数据
-                body: 'postId=' + encodeURIComponent(postId) + '&content=' + encodeURIComponent(content)
-            })
-                .then(response => response.text())
-                .then(result => {
-                    if (result === 'success') {
-                        // 1. 清空输入框
-                        document.getElementById("commentContent").value = '';
-
-                        // 2. 隐藏"暂无评论"提示
-                        var noCommentTip = document.getElementById("no-comment-tip");
-                        if (noCommentTip) noCommentTip.style.display = 'none';
-
-                        // 3. 动态创建一个新评论的 HTML 元素并追加到列表底部
-                        var commentsList = document.getElementById("comments-list");
-                        var newCommentDiv = document.createElement("div");
-                        newCommentDiv.className = "comment-item";
-
-                        // 获取当前时间
-                        // var now = new Date().toLocaleString();
-                        // 获取当前用户名 (JSP渲染时填入)
-                        var username = "${sessionScope.user.username}";
-
-                        newCommentDiv.innerHTML =
-                            '<div class="comment-header">' +
-                            '<strong>' + username + '</strong>' +
-                            // '<span class="comment-date">' + now + '</span>' +
-                            '</div>' +
-                            '<div class="comment-content">' +
-                            '<p>' + content.replace(/</g, "&lt;").replace(/>/g, "&gt;") + '</p>' + // 简单防注入
-                            '</div>';
-
-                        commentsList.appendChild(newCommentDiv);
-
-                    } else if (result === 'need_login') {
-                        alert("请先登录！");
-                        window.location.href = 'login.jsp';
-                    } else {
-                        alert("评论失败，请重试");
-                    }
-                })
-                .catch(error => console.error('Error:', error));
-        }
-    </script>
 </div>
 
 <%@ include file="/include/footer.jsp" %>
 
 <script>
-    // 获取原始 Markdown 内容
+    // 点赞脚本
+    function updateLike(postId) {
+        fetch('${pageContext.request.contextPath}/likePost?postId=' + postId, { method: 'POST' })
+            .then(response => response.text())
+            .then(newCount => {
+                document.getElementById('likeCountDisplay').innerText = newCount;
+                const btn = document.querySelector('.btn-outline-danger');
+                btn.classList.add('active');
+                setTimeout(() => btn.classList.remove('active'), 200);
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    // 评论脚本
+    function submitComment() {
+        var content = document.getElementById("commentContent").value;
+        var postId = document.getElementById("commentPostId").value;
+
+        if (!content.trim()) {
+            alert("请输入评论内容！");
+            return;
+        }
+
+        fetch('${pageContext.request.contextPath}/addComment', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: 'postId=' + encodeURIComponent(postId) + '&content=' + encodeURIComponent(content)
+        })
+            .then(response => response.text())
+            .then(result => {
+                if (result === 'success') {
+                    document.getElementById("commentContent").value = '';
+                    var noCommentTip = document.getElementById("no-comment-tip");
+                    if (noCommentTip) noCommentTip.style.display = 'none';
+
+                    var commentsList = document.getElementById("comments-list");
+                    var username = "${sessionScope.user.username}";
+
+                    var newHtml = `
+                    <div class="d-flex mb-3 border-bottom border-secondary pb-3 comment-item">
+                        <div class="flex-shrink-0">
+                            <div class="bg-dark border border-secondary rounded-circle d-flex justify-content-center align-items-center text-muted" style="width: 35px; height: 35px;">
+                                ` + username.substring(0,1).toUpperCase() + `
+                            </div>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <div class="d-flex justify-content-between">
+                                <h6 class="mt-0 mb-1 text-primary fw-bold">` + username + `</h6>
+                                <small class="text-muted">刚刚</small>
+                            </div>
+                            <p class="mb-0 text-light">` + content.replace(/</g, "&lt;").replace(/>/g, "&gt;") + `</p>
+                        </div>
+                    </div>
+                `;
+
+                    commentsList.insertAdjacentHTML('beforeend', newHtml);
+                } else if (result === 'need_login') {
+                    alert("请先登录！");
+                    window.location.href = 'login.jsp';
+                } else {
+                    alert("评论失败");
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    // Markdown 渲染
     var rawContent = document.getElementById('raw-content').value;
-    // 使用 marked 库进行转换
     var htmlContent = marked.parse(rawContent);
-    // 注入到显示区域
     document.getElementById('display-content').innerHTML = htmlContent;
 </script>
 
