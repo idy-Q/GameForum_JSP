@@ -80,4 +80,20 @@ public class CommentDAO {
         return comments;
     }
 
+    public int getCommentCount() {
+        String sql = "SELECT COUNT(*) as count FROM comments";
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            if (rs.next()) {
+                return rs.getInt("count");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+
 }
