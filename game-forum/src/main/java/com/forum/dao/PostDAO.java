@@ -272,4 +272,80 @@ public class PostDAO {
         }
         return 0;
     }
+
+    /**
+     * 分页获取所有帖子
+     */
+    public List<Post> getAllPosts(int page, int pageSize) {
+        List<Post> posts = new ArrayList<>();
+        int offset = (page - 1) * pageSize;
+
+        String sql = "SELECT p.*, u.username, c.category_name FROM posts p JOIN users u ON p.user_id=u.user_id JOIN categories c ON p.category_id=c.category_id ORDER BY p.created_at DESC LIMIT ? OFFSET ?";
+
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, pageSize);
+            stmt.setInt(2, offset);
+
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Post post = mapResultSetToPost(rs);
+                post.setCategoryName(rs.getString("category_name"));
+                posts.add(post);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return posts;
+    }
+
+    /**
+     * 获取帖子总数
+     */
+    public int getTotalPostCount() {
+        String sql = "SELECT COUNT(*) FROM posts";
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    /**
+     * 分页获取所有帖子，按postId降序排列（最新的帖子在前面）
+     */
+    public List<Post> getAllPostsOrderedById(int page, int pageSize) {
+        List<Post> posts = new ArrayList<>();
+        int offset = (page - 1) * pageSize;
+
+        // 按postId降序排列（DESC），最新的帖子显示在前面
+        String sql = "SELECT p.*, u.username, c.category_name FROM posts p JOIN users u ON p.user_id=u.user_id JOIN categories c ON p.category_id=c.category_id ORDER BY p.post_id DESC LIMIT ? OFFSET ?";
+
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, pageSize);
+            stmt.setInt(2, offset);
+
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Post post = mapResultSetToPost(rs);
+                post.setCategoryName(rs.getString("category_name"));
+                posts.add(post);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return posts;
+    }
+
+
 }

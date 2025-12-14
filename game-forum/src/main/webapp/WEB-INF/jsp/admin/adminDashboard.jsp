@@ -6,16 +6,15 @@
     // 获取统计数据的逻辑
     com.forum.dao.UserDAO userDAO = new com.forum.dao.UserDAO();
     com.forum.dao.PostDAO postDAO = new com.forum.dao.PostDAO();
-    // 注意：需要确认 CommentDAO 是否存在
-    // com.forum.dao.CommentDAO commentDAO = new com.forum.dao.CommentDAO();
+    com.forum.dao.CommentDAO commentDAO = new com.forum.dao.CommentDAO();
 
     int userCount = userDAO.getUserCount();
     int postCount = postDAO.getPostCount();
-    // int commentCount = commentDAO.getCommentCount();
+     int commentCount = commentDAO.getCommentCount();
 
     request.setAttribute("userCount", userCount);
     request.setAttribute("postCount", postCount);
-    // request.setAttribute("commentCount", commentCount);
+    request.setAttribute("commentCount", commentCount);
 %>
 
 <!DOCTYPE html>
@@ -27,8 +26,8 @@
 </head>
 <body>
     <%@ include file="../../../include/header.jsp" %>
-    
-    <div class="container">
+
+    <div class="admin-container">
         <c:if test="${sessionScope.user == null || sessionScope.user.role != 'admin'}">
             <div class="alert alert-error">权限不足</div>
             <script>

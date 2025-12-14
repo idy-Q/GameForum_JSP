@@ -153,13 +153,25 @@
             .then(response => response.text())
             .then(result => {
                 if (result === 'success') {
+                    // 1. 清空输入框
                     document.getElementById("commentContent").value = '';
                     var noCommentTip = document.getElementById("no-comment-tip");
                     if (noCommentTip) noCommentTip.style.display = 'none';
 
+                    // 2. 准备插入数据
                     var commentsList = document.getElementById("comments-list");
                     var username = "${sessionScope.user.username}";
 
+                    // --- 核心修改：生成当前时间字符串 (yyyy-MM-dd HH:mm) ---
+                    var now = new Date();
+                    var timeStr = now.getFullYear() + "-" +
+                        String(now.getMonth() + 1).padStart(2, '0') + "-" +
+                        String(now.getDate()).padStart(2, '0') + " " +
+                        String(now.getHours()).padStart(2, '0') + ":" +
+                        String(now.getMinutes()).padStart(2, '0');
+                    // ------------------------------------------------
+
+                    // 3. 构建 HTML
                     var newHtml = `
                     <div class="d-flex mb-3 border-bottom border-secondary pb-3 comment-item">
                         <div class="flex-shrink-0">
@@ -170,7 +182,8 @@
                         <div class="flex-grow-1 ms-3">
                             <div class="d-flex justify-content-between">
                                 <h6 class="mt-0 mb-1 text-primary fw-bold">` + username + `</h6>
-                                <small class="text-muted">刚刚</small>
+                                <%-- 使用生成的 timeStr 替换 '刚刚' --%>
+                                <small class="text-muted">` + timeStr + `</small>
                             </div>
                             <p class="mb-0 text-light">` + content.replace(/</g, "&lt;").replace(/>/g, "&gt;") + `</p>
                         </div>

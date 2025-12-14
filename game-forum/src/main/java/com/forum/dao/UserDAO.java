@@ -64,6 +64,7 @@ public class UserDAO {
                 user.setUsername(rs.getString("username"));
                 user.setEmail(rs.getString("email"));
                 user.setRole(rs.getString("role"));
+                user.setCreatedAt(rs.getTimestamp("created_at"));
                 users.add(user);
             }
         } catch (SQLException e) {

@@ -23,6 +23,7 @@ public class CategoryDAO {
                 category.setCategoryId(rs.getInt("category_id"));
                 category.setCategoryName(rs.getString("category_name"));
                 category.setDescription(rs.getString("description"));
+                category.setCreatedAt(rs.getTimestamp("created_at"));
                 categories.add(category);
             }
         } catch (SQLException e) {
@@ -32,12 +33,13 @@ public class CategoryDAO {
     }
     
     public boolean addCategory(Category category) {
-        String sql = "INSERT INTO categories(category_name, description) VALUES(?, ?)";
+        String sql = "INSERT INTO categories(category_name, description, created_at) VALUES(?, ?, ?)";
         try (Connection conn = DBUtil.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             
             stmt.setString(1, category.getCategoryName());
             stmt.setString(2, category.getDescription());
+            stmt.setTimestamp(3, category.getCreatedAt());
             
             return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
