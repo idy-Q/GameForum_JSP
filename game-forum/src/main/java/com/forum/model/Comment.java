@@ -1,6 +1,7 @@
 // Comment.java
 package com.forum.model;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 public class Comment {
@@ -8,7 +9,7 @@ public class Comment {
     private String content;
     private int userId;
     private int postId;
-    private Date createdAt;
+    private Timestamp createdAt;
     private String username; // For display purposes
     
     // Constructors
@@ -18,7 +19,7 @@ public class Comment {
         this.content = content;
         this.userId = userId;
         this.postId = postId;
-        this.createdAt = new Date();
+//        this.createdAt = new Date();
     }
     
     // Getters and Setters
@@ -34,8 +35,8 @@ public class Comment {
     public int getPostId() { return postId; }
     public void setPostId(int postId) { this.postId = postId; }
     
-    public Date getCreatedAt() { return createdAt; }
-    public void setCreatedAt(Date createdAt) { this.createdAt = createdAt; }
+    public Timestamp getCreatedAt() { return createdAt; }
+    public void setCreatedAt(Timestamp createdAt) { this.createdAt = createdAt; }
     
     public String getUsername() { return username; }
     public void setUsername(String username) { this.username = username; }
